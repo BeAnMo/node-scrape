@@ -38,7 +38,7 @@ function scrapeIndeed(){
 // String, String -> Object
 // takes in strings as paths to JSON info and returns
 // an object
-function results(posts, terms){
+/*function results(posts, terms){
     return {
         POSTS: {
             path: posts,
@@ -49,11 +49,11 @@ function results(posts, terms){
             data: null,
         }
     };
-}
+}*/
 
 // Object -> Void
 // takes in results and loads the appropriate JSON files
-function loadResults(results){
+/*function loadResults(results){
     const getData = (KEY) => {
         utility.importJSON(KEY.path, (data) => {
             KEY.data = data;
@@ -63,7 +63,7 @@ function loadResults(results){
 
     getData(results.POSTS);
     getData(results.TERMS);
-}
+}*/
 
 // test data for export
 //const TEST = results(POSTS_JSON, TERMS_JSON);

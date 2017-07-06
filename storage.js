@@ -15,9 +15,16 @@ const sqlite3 = require('sqlite3').verbose(),
 */
 const db = new sqlite3.Database('scraped.db');
 const LANGS = Object.keys(input.TERMS.LANGS) 
-const dbRunErr = function(err){ 
-    if(err) return new Error(err); 
-};
+//const dbRunErr = function(err){ 
+//    if(err) return new Error(err); 
+//};
+
+// String -> [Error -> Error]
+const dbErr = function(path){
+    return function(err){
+        if(err) return new Error(path + ': ' + err);
+    }
+}
 
 // ensures DB is set up
 db.serialize(() => {
@@ -30,10 +37,10 @@ db.serialize(() => {
             '(post_ref INTEGER, FOREIGN KEY(post_ref) REFERENCES posts(db_id))';
     };
     
-    db.run('PRAGMA foreign_keys=on', dbRunErr);
-    db.run(postTable, dbRunErr);
+    db.run('PRAGMA foreign_keys=on', dbErr('PRAGMA'));
+    db.run(postTable, dbErr('CREATE TABLE posts'));
     LANGS.forEach((term) => {
-        db.run(langTable(term), dbRunErr);
+        db.run(langTable(term), dbErr('CREATE TABLE langs'));
     });
 });
 
@@ -47,11 +54,12 @@ function insertPost(statement, post){
         post.link
     ];
 
-    return statement.run(params, (err) => {
-        if(err) return new Error('insertPost:', err);
+    //return statement.run(params, (err) => {
+    //    if(err) return new Error('insertPost:', err);
 
-        console.log('INSERTED:', params[0]);
-    });
+    //    console.log('INSERTED:', params[0]);
+    //});
+    return statement.run(params, dbErr('insertPost()'))
 }
 
 // Array -> Void
@@ -85,11 +93,13 @@ function insertAllPosts(postMap){
 
 // String, String, String, String -> [String -> [Error -> Void]]
 function insertTerm(statement, post_id, db_id, term){
-    return statement.run(db_id, (err) => {
-        if(err) return new Error('insertTerm:', err);
+    console.log('INSERTING ' + post_id + ' INTO ' + term);
+    //return statement.run(db_id, (err) => {
+    //    if(err) return new Error('insertTerm:', err);
 
-        return console.log('INSERTING ' + post_id + ' INTO ' + term);
-    });
+    //    return console.log('INSERTING ' + post_id + ' INTO ' + term);
+    //});
+    return statement.run(db_id, dbErr('insertTerm()'));
 }
 
 

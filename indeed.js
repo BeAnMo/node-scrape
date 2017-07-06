@@ -6,8 +6,8 @@ const cheerio   = require('cheerio'),
       hyperText = require('./http-methods');
 
 const DATA = {
-    CITY: 'nashville',
-    BASE: 'www.indeed.com',
+    CITY:  'nashville',
+    BASE:  'www.indeed.com',
     LANGS: input.TERMS.LANGS,
     POSTS: new Map(),
     CACHE: {},
@@ -24,7 +24,7 @@ function searchPath(city, term){
 
 
 // String -> [String -> Void]
-// takes in a city & Options, and retrieves all available PostLinkInfo,
+// takes in a city & Options, and retrieves all available job posts,
 // (goes through result pagination until end)
 function searchPages(path){ // no callback? 
     return hyperText.create$('https://' + DATA.BASE + path).then(($) => {
@@ -49,9 +49,8 @@ function getSearchPageInfo($){
 
 
 // Object -> [String, String -> Void]
-// takes in a cheerio Object, and the options Object from getHTML,
-// retrieves individual post link info from a single Indeed search results page,
-// and stores the info into POSTS
+// takes in a cheerio Object, retrieves individual post link info from 
+//a single Indeed search results page, and stores the info into POSTS
 function getPostLinksInfo($){
     return $('.result').each(function(i, job){
         let postID = job.attribs['data-jk'];
@@ -80,9 +79,9 @@ function getPostLinksInfo($){
 function makePostLinkInfo(html){
     let post = {
         postID: null,
-        title: null,
-        city: null,
-        link: null
+        title:  null,
+        city:   null,
+        link:   null
     };
     
     switch(typeof(html.attribs['data-tn-component'])){
@@ -106,8 +105,8 @@ function makePostLinkInfo(html){
 
 
 // Object -> String or Null
-// takes in a cheerio Object
-// retrieves the 'Next' page link on a Indeed search results page
+// takes in a cheerio Object and retrieves the 'Next' page link on an 
+// Indeed search results page, if the 'next' link exists
 function getNextPage($){
     var pages = $('.pagination a');
     var $last = $(pages[pages.length - 1]);
@@ -123,7 +122,9 @@ function getNextPage($){
 
 
 // String, String -> [String -> [Object -> Void]]
-// retrieves all search terms from an HTML string
+// takes in a URL string and a Indeed post ID, loads the page, and filters
+// it for the given search terms from input.js
+// !!! need to limit/delay retrying a 302 link
 function getTerms(url, id){
     return hyperText.getHTML(url).then((data) => {
         var $ = cheerio.load(data);

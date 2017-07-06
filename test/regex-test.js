@@ -42,8 +42,8 @@ describe('RegExp patterns for languages', () => {
 
 /*------- Testing functions -----------------------------*/
 // String -> Void
-// Takes in a test string ('pass' or 'fail') and runs the specified string
-// through the its RegExp pattern supplied by each term
+// Takes in a test string ('pass' or 'fail') and runs the specified test
+// through the its RegExp patterns supplied by each term
 function langsRXTest(testStr){
     describe('should ' + testStr + ':', () => {
         TEST_STRINGS.forEach((obj) => {
@@ -67,12 +67,12 @@ function langsRXTest(testStr){
 // creates a test string of 9 matches for a given word
 function createPassString(word){
     var borders = [
-        '/', ',', '-', '_', ' ', '.', ':', '*', '\\'
+        '/', ',', '-', '_', '.', ':', '*', '\\'
     ];
     
-    return borders.map((border) => {
-        return border + word + border;
-    }).join(' ');
+    return borders.reduce((base, border) => {
+        return base + ' ' + border + word + border;
+    }, word);
 }
 
 
@@ -80,23 +80,21 @@ function createPassString(word){
 // creates a test string that fails for a given word
 function createFailString(word){
     var borders = [
-        '/', ',', '-', '_', ' ', '.', ':', '*', '\\'
+        '/', ',', '-', '_', '.', ':', '*', '\\'
     ];
     
-    var b2 = borders.concat(borders);
-    
-    return b2.map((border, i, arr) => {
+    return borders.concat(borders).reduce((base, border, i) => {
         if(i % 2 === 0){
-            return border + 'a' + word + border;
+            return base + border + 'a' + word + border;
         } else {
-            return border + word + 'a' + border;
+            return base + ' ' + border + word + 'a' + border;
         }      
-    }).join(' ');
+    }, 'a' + word + ' ' + word + 'a');
 }
 
 
 // output testing objects
-let path = '/home/bammer/myProjects/scraperv2/output/';
-utility.outputJSON(path + 'testing-strings.json', TEST_STRINGS);
+//let path = '/home/bammer/myProjects/scraperv2/output/';
+//utility.outputJSON(path + 'testing-strings.json', TEST_STRINGS);
 
 

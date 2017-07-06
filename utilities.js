@@ -33,19 +33,6 @@ function inputJSON(path, callback){
 }
 
 
-// Object, String -> Void
-// writes a JSON file of a given Object to the logs directory
-function makeLog(file, name){
-    var date = formatDate(new Date());
-    var path = './logs/' + date + '_' + name + '.json';
-    return fs.writeFile(path, JSON.stringify(file), function(err){
-        if(err) console.log(err);
-        
-        console.log('LOGGED:', path);
-    });
-}
-
-
 // Date -> String
 // returns a formatted string for output log filename
 // 'YYYY-MM-DD_HH-MM'
@@ -64,25 +51,6 @@ function formatDate(d){
 }
 
 
-// Object -> Number
-// returns the length of words.POSTS
-function objectLength(obj){
-    return Object.keys(obj).length;
-}
-
-
-// String, [Object -> X] -> [String, [Error, Object -> [Object -> x]]]
-// reads an existing JSON file from ./logs and takes a callback to operate
-// on the loaded Object
-function readLog(file, callback){
-    return fs.readFile('./logs/' + file, function(err, data){
-        if(err) return console.log(err);
-        
-        return callback(JSON.parse(data));
-    });
-}
-
-
 // Array -> Array
 // filters array of duplicate IDs
 function uniqueIDs(arr){
@@ -95,7 +63,5 @@ function uniqueIDs(arr){
 
 module.exports = {
     outputJSON:  outputJSON,
-    inputJSON:  inputJSON,  
-    makeLog:    makeLog,
-    readLog:    readLog,
+    inputJSON:   inputJSON,  
 };
