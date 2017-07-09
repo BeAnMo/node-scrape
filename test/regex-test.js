@@ -7,14 +7,7 @@ const expect  = require('chai').expect,
 /*
 
 - Notes 2017-07-09:
-  - languages with multiple searches (c#, js, vb, ...) will only pass the first
-    test string from the first search
-    ex: [c#, csharp, c sharp] will only pass all 9 test strings for 'c#' but
-    only passes the last 8 test strings for both 'csharp' & 'c sharp'
-    - FIXED
-    
-- Not failing:
-  sql
+  - all passing & all failing
       
 */
 
@@ -61,7 +54,15 @@ function langsRXTest(testStr){
                     // all tests pass
                     expect(result.length).to.equal(9 * searches.length);
                 } else {
-                    expect(result).to.equal(null);
+                    // sql is a special case, 'sql' maybe preceeded or followed
+                    // by letters, ex: 'mysql' or 'sqlite'
+                    // 18 is the amount of fail strings to be tested
+                    // 'sql' should match all
+                    if(obj.lang === 'sql'){
+                        expect(result.length).to.equal(18);
+                    } else {
+                        expect(result).to.equal(null);
+                    }
                 }
             });
         });

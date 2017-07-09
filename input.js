@@ -18,30 +18,6 @@ const SEARCH_TERMS = [
     'frontend+engineer',
 ];
 
-// a Post {} is made of:
-// postID: String
-// title:  String
-// link:   String
-// city:   String
-
-// POSTS is made of:
-// Array-of-Post
-
-// a Term {} is made of:
-// search-term: Array-of-postID
-
-// TERMS {} is made of:
-// Term
-// * DB issues with storing '.net' & 'c#'
-// * issues with scraping for 'go' & 'swift' 
-//   - not enough context to distinguish computer 
-//     related posts vs else
-// * issues with scraping 'html' 
-//   - regexp will pick up DOCTYPE and/or <html> tags
-//     on off site posts (ex: not posts hosted on indeed or
-//     craigslist)
-// * issues with scraping 'java'
-//   - will pick up 'javascript' as well
 const LANG_TERMS = {
     //!!! remeber to update functions that rely on LANG_TERMS to
     // account for the switch from array to object !!!
@@ -69,7 +45,7 @@ const LANG_TERMS = {
     rust:       { ids: [], searches: ['rust'] },
     scala:      { ids: [], searches: ['scala'] },
     scheme:     { ids: [], searches: ['scheme'] },
-    sql:        { ids: [], searches: ['sql', 'mssql', 'mysql', 'postgresql', 'sqlite', 'tsql', 't-sql'] },
+    sql:        { ids: [], searches: ['sql'] }, // RegExp should account for mysql, t-sql, mssql
     swift:      { ids: [], searches: ['swift'] },
     visualbasic:{ ids: [], searches: ['visual basic', 'visualbasic', 'vb', 'vba'] },
 };

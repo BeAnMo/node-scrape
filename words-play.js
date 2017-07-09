@@ -49,7 +49,9 @@ function createRX(phrases){
         }
         // patterns match a given phrase surrounded by non letter characters
         // so 'scheme' will pass but not 'schemer'
-        if(i === 0){
+        if(phrase === 'sql'){
+            return phrase;
+        } else if(i === 0){
             return base + `(^|[^A-Za-z])${phrase}[^A-Za-z]`;
         } else {
             return base + `|(^|[^A-Za-z])${phrase}[^A-Za-z]`;
