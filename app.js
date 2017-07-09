@@ -73,12 +73,8 @@ function scrapeIndeed(){
 
 module.exports = {
     scrapeIndeed: scrapeIndeed,
-    //results:      results,
-    //loadResults:  loadResults,
     POSTS:        indeed.DATA.POSTS,
     LANGS:        indeed.DATA.LANGS,
     DB:           db,
     Utils:        utility,
-    //TEST_DATA:    TEST,
-    //TEST_CACHE:  indeed.CACHE,
 };
