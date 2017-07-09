@@ -6,20 +6,12 @@ const expect  = require('chai').expect,
       
 /*
 
-- Notes 2017-07-08:
-  - c
-    - passes & fails but only tests for 'c_lang', not 'c'
-  - javascript & visual basic tests need to account for separate words and initials
-
-- Not passing:
-  c#
-  go
-  javascript
-  objective-c
-  powershell
-  sql
-  visualbasic
-  - basically anything that has more than 1 search
+- Notes 2017-07-09:
+  - languages with multiple searches (c#, js, vb, ...) will only pass the first
+    test string from the first search
+    ex: [c#, csharp, c sharp] will only pass all 9 test strings for 'c#' but
+    only passes the last 8 test strings for both 'csharp' & 'c sharp'
+    - FIXED
     
 - Not failing:
   sql
@@ -64,7 +56,7 @@ function langsRXTest(testStr){
                 let searches = words.DATA.LANGS[obj.lang].searches;
                 let rxs = words.createRX(searches);     
                 let result = obj[testStr].match(rxs);
-                
+
                 if(testStr === 'pass'){
                     // all tests pass
                     expect(result.length).to.equal(9 * searches.length);
@@ -87,7 +79,7 @@ function createPassString(word){
     
     return borders.reduce((base, border) => {
         return base + ' ' + border + word + border;
-    }, word);
+    }, ` ${word}`);
 }
 
 

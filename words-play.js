@@ -39,18 +39,20 @@ function createRXExtended(rxStr){
 // and creates a single RegExp based on those phrases to be used in
 // scraping job posts
 function createRX(phrases){
-    //let args = [...arguments];
+    // creates a RegExp pattern from a string
     let rx = `${phrases.reduce((base, phrase, i) => {
         // check phrase for spaces & '+'
         if(phrase === 'c++'){
             phrase = 'c\\+\\+';
+        } else if(phrase.indexOf(' ') > -1){
+            phrase = phrase.split(' ').join('\\s');
         }
         // patterns match a given phrase surrounded by non letter characters
         // so 'scheme' will pass but not 'schemer'
         if(i === 0){
             return base + `(^|[^A-Za-z])${phrase}[^A-Za-z]`;
         } else {
-            return base + `|[^A-Za-z]${phrase}[^A-Za-z]`;
+            return base + `|(^|[^A-Za-z])${phrase}[^A-Za-z]`;
         }
         
     }, '')}`;

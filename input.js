@@ -49,7 +49,7 @@ const LANG_TERMS = {
     awk:        { ids: [], searches: ['awk'] },
     bash:       { ids: [], searches: ['bash'] },
     c_lang:     { ids: [], searches: ['c'] },
-    csharp:     { ids: [], searches: ['c#', 'csharp', 'cssharp'] },
+    csharp:     { ids: [], searches: ['c#', 'csharp', 'c sharp'] },
     cpp:        { ids: [], searches: ['c++'] },
     clojure:    { ids: [], searches: ['clojure'] },
     cobol:      { ids: [], searches: ['cobol'] },
