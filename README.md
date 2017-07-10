@@ -29,11 +29,12 @@ Import data from JSON file:
 
 callback takes JSON file as parameter.
 app.POSTS input/output:
-- Map -> JSON:
+
+Map -> JSON:
      
     JSON.stringify([...mapName]);
         
-- JSON -> Map:
+JSON -> Map:
      
     new Map(JSON.parse(jsonName));
 
