@@ -27,9 +27,9 @@ Import data from JSON file:
 
     app.JSON.input('path/to/file.json', callback)
 
-callback takes JSON file as parameter.
+ - The callback takes JSON file as parameter.
+ 
 app.POSTS input/output:
-
 Map -> JSON:
      
     JSON.stringify([...mapName]);
