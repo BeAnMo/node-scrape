@@ -2,16 +2,11 @@
 /******** Main *******************************************/
 const utility   = require('./utilities'),
       words     = require('./words-play'),
-      db        = require('./storage'),
+      store     = require('./storage/index'),
       indeed    = require('./indeed'),
       input     = require('./input');
 
-// sqlite3 issues with Node 8.1
-// use 6.*
-
-// current test files
-//const POSTS_JSON = './output/filter-posts.json';
-//const TERMS_JSON = './output/filter-terms.json';
+/* sqlite3 issues with Node 8.1, use 6.x */
 
 // current usage
 // all const can go to input.js:
@@ -32,49 +27,11 @@ function scrapeIndeed(){
 }
 
 
-// move to gp.js?
-/*-------------------------------------------------------*/
-/*------- Converting to/from JSON files -----------------*/
-// String, String -> Object
-// takes in strings as paths to JSON info and returns
-// an object
-/*function results(posts, terms){
-    return {
-        POSTS: {
-            path: posts,
-            data: null,
-        },
-        TERMS: {
-            path: terms,
-            data: null,
-        }
-    };
-}*/
-
-// Object -> Void
-// takes in results and loads the appropriate JSON files
-/*function loadResults(results){
-    const getData = (KEY) => {
-        utility.importJSON(KEY.path, (data) => {
-            KEY.data = data;
-            return console.log('RETRIEVED', KEY.path);
-        });
-    };
-
-    getData(results.POSTS);
-    getData(results.TERMS);
-}*/
-
-// test data for export
-//const TEST = results(POSTS_JSON, TERMS_JSON);
-// initialize JSON load
-//loadResults(TEST);
-
-
 module.exports = {
     scrapeIndeed: scrapeIndeed,
     POSTS:        indeed.DATA.POSTS,
     LANGS:        indeed.DATA.LANGS,
-    DB:           db,
+    DB:           store.DB,
+    JSON:         store.JSON,
     Utils:        utility,
 };

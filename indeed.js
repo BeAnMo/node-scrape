@@ -137,9 +137,9 @@ function getTerms(url, id){
         } else {
             return words.presentTerms(data).forEach((term) => {
                 console.log('SCRAPING:', id);
-                let termArr = DATA.LANGS[term];
+                let termArr = DATA.LANGS[term].ids;
                 if(termArr.indexOf(id) === -1){
-                    return DATA.LANGS[term].push(id);
+                    return termArr.push(id);
                 }
             });
         }

@@ -3,51 +3,38 @@
 const fs = require('fs');
 
 
-/* Map -> JSON:
- * JSON.stringify([...mapName]);
- *
- * JSON -> Map:
- * new Map(JSON.parse(jsonName));
- */
-
-// String, Object -> Void
-// saves JSON to specified path
-function outputJSON(path, obj){
-    return fs.writeFile(path, JSON.stringify(obj), (err) => {
-        if(err) throw new Error(err);
-
-        return console.log('JSON written to', path);
-    }); 
+/* 
+String, Function, Function -> [Error, Object -> Error or [Object -> X]]
+  takes in a string denoting the error location and can optionally take
+  a success callback and failure callback,
+  if no error is present, success callback is called,
+  if their is a failure callback, it is called to prevent the operation from
+  hanging 
+*/
+function result(location, success, failure){
+    return function(err, obj){
+        if(err) {
+            if(failure){
+                return failure(new Error(`${location}: ${err}`));
+            } else {
+                return console.log(`${location}: ${err}`);
+            }
+        } else if(success){
+            return success(obj);
+        } else {
+            return;
+        }
+    }
 }
 
 
-// String, [Object -> X] -> [String, [Error, Object] -> [Object -> X]]
-// imports a JSON file to a JS Object and passes the
-// loaded Object to the callback
-function inputJSON(path, callback){
-    return fs.readFile(path, 'utf-8', (err, data) => {
-        if(err) throw new Error(err);
-
-        return callback(JSON.parse(data));
-    });
-}
-
-
-// Date -> String
-// returns a formatted string for output log filename
-// 'YYYY-MM-DD_HH-MM'
-function formatDate(d){
-    var d = new Date();
-    var adjust = (dSpec) => { if(dSpec < 10) return '0' + dSpec;
-                              else return dSpec; }
-    
-    var hours = adjust(d.getHours());
-    var mins  = adjust(d.getMinutes());
-    var day   = adjust(d.getDate());
-    var month = adjust(d.getMonth() + 1);
-    var year  = d.getFullYear();
-    
-    return year + '-' + month + '-' + day + '_H' + hours + '-M' + mins;
+/*
+Date, String -> String
+  takes in a Date and a descriptive phrase ('langs', 'tools', etc...)
+  and creates a string for the filename of a JSON output
+*/
+function formatDate(d, desc){  
+    return `${new Date().getTime()}-${desc}.json`;
 }
 
 
@@ -62,6 +49,5 @@ function uniqueIDs(arr){
 
 
 module.exports = {
-    outputJSON:  outputJSON,
-    inputJSON:   inputJSON,  
+    result: result  
 };

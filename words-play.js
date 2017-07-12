@@ -1,7 +1,7 @@
 /*********************************************************/
 /******** Filtering data from pages **********************/
 const fs      = require('fs'),
-      utility = require('./utilities'),
+      //utility = require('./utilities'),
       input   = require('./input');
 
 /*-------------------------------------------------------*/
@@ -76,7 +76,8 @@ function regExpToString(re){
 // returns an array of Strings of the present RegExps
 function presentTerms(html){
     return DATA.LANG_KEYS.filter((lang) => {
-        return LANGS[lang].test(html);
+        let rx = createRX(DATA.LANGS[lang].searches);
+        return rx.test(html);
     });
 }
 

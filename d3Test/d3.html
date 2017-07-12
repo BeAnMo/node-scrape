@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <style>
+        .chart, .chart2 {
+            height: 50vh;
+            width: 90vw;
+        }
+        
+        .chart {
+            overflow: auto;
+        }
+    
+        .bar { fill: steelblue; }
+        .bartext { color: #fff; }
+        
+    div.popup {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font: 1rem sans-serif;
+        padding: 0.5rem;
+        background-color: #eff;
+        border-radius: 15%;
+        pointer-events: none;
+    }
+    
+    /* molecule */
+    .link {
+        stroke: #999;
+    }
+    
+    .node {
+        stroke: #fff;
+        stroke-width: 1.5px;
+    }
+    
+    .node .selected {
+        stroke: red;
+    }
+    </style>
+    
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+  </head>
+  <body>
+    <h1>NashLangs</h1>
+    <h3>Tools for Nashville's Job Market</h3>
+    <div class="chart2"></div>
+    
+    <div class="chart"></div>
+    
+    <!--<script src="main.js"></script>-->
+  </body>
+</html>

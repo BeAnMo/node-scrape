@@ -38,3 +38,11 @@ JSON -> Map:
      
     new Map(JSON.parse(jsonName));
 
+---
+
+### False positives:
+Context is critical. 'Ruby' can appear embedded within HTML/JS files loaded into page, while 'go' & 'swift' are too general. Don't rely on RegExp to filter an entire HTML file, try targeting the body at the very least for third party sites.
+- 'c'
+- 'go'
+- 'ruby'
+- 'swift'
