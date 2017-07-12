@@ -16,29 +16,36 @@ const DATA = {
 
 /*-------------------------------------------------------*/
 /*------- Functions -------------------------------------*/
-// String, String -> String
-// creates an indeed search URL from a given city and term
+/* 
+String, String -> String
+  only provides the query string, append to protocl/host
+*/
+
 function searchPath(city, term){
     return "/jobs?q=" + term +  "&l=" + city + "&utm_source=publisher&utm_medium=organic_listings&utm_campaign=affiliate";
 }
 
 
-// String -> [String -> Void]
-// takes in a city & Options, and retrieves all available job posts,
-// (goes through result pagination until end)
-function searchPages(path){ // no callback? 
+/*
+String -> [String -> Void]
+  initiates scraping
+*/
+
+function searchPages(path){
     return hyperText.create$('https://' + DATA.BASE + path).then(($) => {
         return getSearchPageInfo($);
     });
 }
 
 
-// Object -> [String -> Void]
-// takes in a cheerio Object and initiates scraping for PostLinkInfo
+/* 
+Object -> [String -> Void]
+  initiates scrape of current page and advancement to next page if present
+*/
 function getSearchPageInfo($){
-    var next = getNextPage($);
+    var next = getNextPageIfExists($);
     
-    getPostLinksInfo($);
+    getSearchResults($);
     
     if(next === null){
         return console.log('END OF SEARCH');
@@ -48,15 +55,16 @@ function getSearchPageInfo($){
 }
 
 
-// Object -> [String, String -> Void]
-// takes in a cheerio Object, retrieves individual post link info from 
-//a single Indeed search results page, and stores the info into POSTS
-function getPostLinksInfo($){
+/* 
+Object -> [String, String -> Void]
+  retrieves all job post links and stores them in POSTS
+*/
+function getSearchResults($){
     return $('.result').each(function(i, job){
         let postID = job.attribs['data-jk'];
         // check to make sure data-tn-component is a String
         // if not, ignore, no need for makePostLinkInfo
-        let postInfo = makePostLinkInfo(job);
+        let postInfo = getPostLinkInfo(job);
         
         if(postInfo.title === null){
             return console.log('AD DETECTED, LINK SKIPPED');
@@ -69,14 +77,15 @@ function getPostLinksInfo($){
         postInfo.link = url;
         DATA.POSTS.set(postID, postInfo);
           
-        return getTerms(url, postInfo.postID);    
+        return filterForTerms(url, postInfo.postID);    
     });
 }
 
 
-// Object -> Object
-// takes in a HTML Object and returns the appropriate job post information
-function makePostLinkInfo(html){
+/*
+Object -> Object
+*/
+function getPostLinkInfo(html){
     let post = {
         postID: null,
         title:  null,
@@ -104,10 +113,10 @@ function makePostLinkInfo(html){
 }
 
 
-// Object -> String or Null
-// takes in a cheerio Object and retrieves the 'Next' page link on an 
-// Indeed search results page, if the 'next' link exists
-function getNextPage($){
+/* 
+Object -> String or Null
+*/
+function getNextPageIfExists($){
     var pages = $('.pagination a');
     var $last = $(pages[pages.length - 1]);
     var next = $last.attr('href');
@@ -121,18 +130,19 @@ function getNextPage($){
 }
 
 
-// String, String -> [String -> [Object -> Void]]
-// takes in a URL string and a Indeed post ID, loads the page, and filters
-// it for the given search terms from input.js
-// !!! need to limit/delay retrying a 302 link
-function getTerms(url, id){
+/* 
+String, String -> [String -> [Object -> Void]]
+  places post ID into every matching term array
+  !!! better way to limit/delay retrying a 302 link
+*/
+function filterForTerms(url, id){
     return hyperText.getHTML(url).then((data) => {
         var $ = cheerio.load(data);
         
         if($('title').text() === '302 Moved'){
             console.log('RETRYING:', id);
             // find a way to space out retry
-            getTerms($('a').attr('href'), id);
+            filterForTerms($('a').attr('href'), id);
             return;
         } else {
             return words.presentTerms(data).forEach((term) => {

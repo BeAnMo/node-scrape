@@ -36,9 +36,7 @@ function main(jsonData){
 
 /*
 Object -> [String -> Object]
-  takes in a language name, and the JSON data, pulls
-  all the ids from the given lang and checks the other langs
-  for the same ids, adding them to the new object
+  builds object from intersection terms in the id arrays
   {
      source: String (given lang),
      ids: Number (ids in given lang)
@@ -80,8 +78,7 @@ function createLangGraph(data){
 
 /*
 Array, Array -> Array
-  takes in 2 sorted arrays, and merges all intersections
-  into a single array
+  assumes both arrays are sorted
   - could take an additional arg:
     - AND, OR, NOT...
     allow for more complex queries
@@ -108,8 +105,7 @@ function intersect(arr1, arr2){
 
 /*
 Array -> Array
-  takes in an array of languages, and returns an array
-  of all ids containing given languages
+  returns array ids that are present in all given langs
 */
 function multipleIntersect(langs, data){
     /* sorts langs by array size

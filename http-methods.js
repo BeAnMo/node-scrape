@@ -7,8 +7,9 @@ const https   = require('https'),
       cheerio = require('cheerio');
       
 
-// String -> [Object -> X]
-// makes a get request to a given page and uses the callback to access the HTML
+/* 
+String -> [Object -> X]
+*/
 function getHTML(input){
     var parsed = url.parse(input);
     var protocol;
@@ -38,11 +39,9 @@ function getHTML(input){
     });
 }
 
-// String -> [String -> [Object -> X]]
-// takes in an Object of a URL string, callback, and an options object
-// performs a GET request to the Object's URL, 
-// if successful, loads the HTML output as a cheerio Object and returns a
-// Promise
+/* 
+String -> [String -> [Object -> X]]
+*/
 function create$Obj(url){
     return getHTML(url).then((res) => {
         var $ = cheerio.load(res);

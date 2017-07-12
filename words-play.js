@@ -15,29 +15,29 @@ DATA.LANG_KEYS = Object.keys(DATA.LANGS);
 
 /*-------------------------------------------------------*/
 /*------- Functions -------------------------------------*/
-// String -> RegExp
-// given the tail of a RX string, build a new RegExp
-// start of RX pattern only matchs for beginning of string,
-// a space in front of a term, and ignores any letters immediately
-// preceeding the term
-// - be sure to include extra '\' in rxStr arg when using 
-// patterns like '\b', '\s', etc...
-// - must convert RXs to strings to test equality, 
-// RX1 === RX2 -> always false, RX1.toString() === RX2.toString() -> maybe true
+/* 
+String -> RegExp
+  old version
+*/
 function createRX1(rxStr){
     return new RegExp('(^|\\s|[^A-Za-z])' + rxStr + '(?=[^A-Za-z])', "gi");
 }
 
 
-// String -> RegExp
+/*
+String -> RegExp
+  old version
+  allowed for custom RegExp tails
+*/
 function createRXExtended(rxStr){
     return new RegExp('(^|\\s|[^A-Za-z])' + rxStr, 'gi');
 }
 
-// Array -> RegExp
-// takes an array of search phrases that might be found in a job post
-// and creates a single RegExp based on those phrases to be used in
-// scraping job posts
+/*
+Array -> RegExp
+  builds a RegExp from an array of phrases to allow for multiple cases
+  such as 'c#' or 'c sharp', 'javascript' or 'js'
+*/
 function createRX(phrases){
     // creates a RegExp pattern from a string
     let rx = `${phrases.reduce((base, phrase, i) => {
@@ -63,7 +63,10 @@ function createRX(phrases){
 }
 
 
-// RegExp -> String
+/* 
+RegExp -> String
+  old, not necessary
+*/
 // converts a regexp string into a normal string, no '/'
 function regExpToString(re){
 	var rStr = re.toString();
@@ -71,7 +74,12 @@ function regExpToString(re){
 }
 
 
-// String, Array -> Array
+/* 
+String, Array -> Array
+  checks if given terms exist on given web page
+  called in indeed.js
+  parameterize DATA.LANGS/_KEYS
+*/
 // takes in an array of RegExps and an HTML string,
 // returns an array of Strings of the present RegExps
 function presentTerms(html){

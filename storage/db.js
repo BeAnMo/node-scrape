@@ -5,7 +5,7 @@ const sqlite3 = require('sqlite3').verbose(),
       
 const db = new sqlite3.Database('./storage/data/scraped.db',
                                 utility.result('new sqlite DB'));
-//console.log(process.cwd());
+
 
 /*------- DB Functions ----------------------------------*/
 /* initialize the DB, create posts table if not created */
@@ -19,8 +19,7 @@ db.serialize(() => {
 
 /*
 Object, Object, Number -> Void
-  takes in a DB statement and post information and inserts
-  the post into the DB, and increases the insert counter by 1
+  called in insertAllPosts
 */
 function insertPost(statement, post, count){ 
     let params =  [
@@ -40,7 +39,6 @@ function insertPost(statement, post, count){
 
 /*
 Map -> Void
-  takes in a Map of posts and inserts all into the DB
 */
 function insertAllPosts(postMap){
     db.serialize(() => {

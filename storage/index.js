@@ -1,7 +1,7 @@
 const modDB   = require('./db'),
       modJSON = require('./json');
 
-/* Juntion for all data stroage related functionality */
+/* Junction for all data stroage related functionality */
 
 module.exports = {
     DB: {

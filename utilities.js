@@ -5,11 +5,9 @@ const fs = require('fs');
 
 /* 
 String, Function, Function -> [Error, Object -> Error or [Object -> X]]
-  takes in a string denoting the error location and can optionally take
-  a success callback and failure callback,
-  if no error is present, success callback is called,
-  if their is a failure callback, it is called to prevent the operation from
-  hanging 
+  passed as error callback for async operations
+  allows logging of error location
+  success/failure callbacks optional
 */
 function result(location, success, failure){
     return function(err, obj){
@@ -30,16 +28,18 @@ function result(location, success, failure){
 
 /*
 Date, String -> String
-  takes in a Date and a descriptive phrase ('langs', 'tools', etc...)
-  and creates a string for the filename of a JSON output
+  for logging json output
+  still necessary?
 */
 function formatDate(d, desc){  
     return `${new Date().getTime()}-${desc}.json`;
 }
 
 
-// Array -> Array
-// filters array of duplicate IDs
+/*
+Array -> Array
+  probably not necessary when using a Map vs an Object
+*/
 function uniqueIDs(arr){
     let cache = {};
     return arr.filter((item) => {

@@ -4,7 +4,7 @@ const utility = require('../utilities'),
 
 /* 
 String, Object -> Void
-  saves JSON of given description to the output folder
+  writes to ./storage/data/
 */
 function outputJSON(desc, obj){
     return fs.writeFile(createFileName(path), JSON.stringify(obj), (err) => {
@@ -17,8 +17,6 @@ function outputJSON(desc, obj){
 
 /*
 String, [Object -> X] -> [String, [Error, Object] -> [Object -> X]]
-  imports a JSON file to a JS Object and passes the
-  loaded Object to the callback
 */
 function inputJSON(path, callback){
     return fs.readFile(path, 'utf-8', (err, data) => {
@@ -31,8 +29,6 @@ function inputJSON(path, callback){
 
 /*
 Date, String -> String
-  takes in a Date and a descriptive phrase ('langs', 'tools', etc...)
-  and creates a string for the filename of a JSON output
   assumes CWD is project root
 */
 function createFileName(desc){
