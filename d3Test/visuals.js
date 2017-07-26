@@ -12,7 +12,7 @@ range  -> outputs
        .attr('dy', '.35em')
        .attr('text-anchor', 'middle')
        .attr('transform', 'rotate(-90)')
-       .text((d) => { return d.lang; });*/
+       .text((d) => { return d.lang; });  */
 
 var langsReq = new Request('filtered-langs.json', {
     method: 'get',

@@ -1,7 +1,7 @@
 const modDB   = require('./db'),
       modJSON = require('./json');
 
-/* Junction for all data stroage related functionality */
+/* check if JSON1 is availbable with sqlite3 */
 
 module.exports = {
     DB: {

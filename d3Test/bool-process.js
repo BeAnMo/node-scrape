@@ -1,5 +1,5 @@
 /***** Boolean processing *****/
-// Request -> Promise [Request -> Object]
+/* Request -> Promise [Request -> Object] */
 async function get(req){
     var fetched = await fetch(req)
        .then((res) => {
@@ -12,6 +12,7 @@ async function get(req){
     return fetched;
 }
 
+/* initialize */
 get('filtered-langs.json').then(main).catch(console.log);
 
 function main(jsonData){
@@ -34,8 +35,7 @@ function main(jsonData){
     console.log(andTest);
 }
 
-/*
-Object -> [String -> Object]
+/* Object -> [String -> Object]
   builds object from intersection terms in the id arrays
   {
      source: String (given lang),
@@ -46,8 +46,7 @@ Object -> [String -> Object]
            ids: Number (ids in given lang)
         }
      ]
-  }
-*/
+  }  */
 function createLangGraph(data){
     return function(lang){
         var langs = Object.keys(data);
@@ -76,13 +75,11 @@ function createLangGraph(data){
     }    
 }
 
-/*
-Array, Array -> Array
+/* Array, Array -> Array
   assumes both arrays are sorted
   - could take an additional arg:
     - AND, OR, NOT...
-    allow for more complex queries
-*/
+    allow for more complex queries  */
 function intersect(arr1, arr2){
     var result = [];
     var a1 = arr1;

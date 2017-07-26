@@ -19,9 +19,6 @@ const SEARCH_TERMS = [
 ];
 
 const LANG_TERMS = {
-    //!!! remeber to update functions that rely on LANG_TERMS to
-    // account for the switch from array to object !!!
-    //dontnet:    [], move into lang_tools
     awk:        { ids: [], searches: ['awk'] },
     bash:       { ids: [], searches: ['bash'] },
     c_lang:     { ids: [], searches: ['c'] },
@@ -45,26 +42,13 @@ const LANG_TERMS = {
     rust:       { ids: [], searches: ['rust'] },
     scala:      { ids: [], searches: ['scala'] },
     scheme:     { ids: [], searches: ['scheme'] },
-    sql:        { ids: [], searches: ['sql'] }, // RegExp should account for mysql, t-sql, mssql
+    sql:        { ids: [], searches: ['sql'] },
     swift:      { ids: [], searches: ['swift'] },
     visualbasic:{ ids: [], searches: ['visual basic', 'visualbasic', 'vb', 'vba'] },
 };
 
-// for words-play.js to set up regex filtering
-const TOOLS = {
-    LANGS: {},
-    LANG_KEYS: Object.keys(LANG_TERMS),
-    // Information of language tools (libraries/frameworks/etc...)
-    LANG_TOOLS: {},
-    // Information of non-language tools (server software/OSs/DBs/etc...)
-    TOOLS: {},
-    // Arrary-of-Array, [String of language, RegExp tail]
-    // temp only, will be destroyed when DATA.LANGS is loaded
-};
-
 
 module.exports = {
-    TOOLS:  TOOLS,
     CITY:  CITY,
     POSTS: [],
     TERMS: {

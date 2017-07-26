@@ -2,10 +2,8 @@ const utility = require('../utilities'),
       fs      = require('fs');
 
 
-/* 
-String, Object -> Void
-  writes to ./storage/data/
-*/
+/* String, Object -> Void
+    writes to ./storage/data/  */
 function outputJSON(desc, obj){
     return fs.writeFile(createFileName(path), JSON.stringify(obj), (err) => {
         if(err) return console.error(err);
@@ -15,9 +13,7 @@ function outputJSON(desc, obj){
 }
 
 
-/*
-String, [Object -> X] -> [String, [Error, Object] -> [Object -> X]]
-*/
+/* String, [Object -> X] -> [String, [Error, Object] -> [Object -> X]] */
 function inputJSON(path, callback){
     return fs.readFile(path, 'utf-8', (err, data) => {
         if(err) return console.error(err);
@@ -27,10 +23,8 @@ function inputJSON(path, callback){
 }
 
 
-/*
-Date, String -> String
-  assumes CWD is project root
-*/
+/* String -> String
+    assumes CWD is project root  */
 function createFileName(desc){
     let date = new Date();
     let dateStr = `${date.getMonth() + 1}-${date.getDate()}`;

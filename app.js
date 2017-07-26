@@ -6,20 +6,18 @@ const utility   = require('./utilities'),
       indeed    = require('./indeed'),
       input     = require('./input');
 
-/* sqlite3 issues with Node 8.1, use 6.x */
+/* sqlite3 will not work with Node 8+, use 6.x */
 
 // current usage
 // all const can go to input.js:
 const CITY = input.CITY; // nashville ATM
 const SEARCH_TERMS = input.TERMS.SEARCHES;
-
 const LINKS = SEARCH_TERMS.map((term) => {
     return indeed.searchPath(CITY, term);
 });
 
 
-// initiate scraping
-// scrape -> insert POSTS -> insert TERMS
+/* initiate Indeed scraping */
 function scrapeIndeed(){
     return LINKS.forEach((link) => {
         indeed.searchPages(link, { city: CITY });

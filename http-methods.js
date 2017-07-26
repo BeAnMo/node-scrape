@@ -3,13 +3,10 @@
 const https   = require('https'),
       http    = require('http'),
       url     = require('url'),
-      fs      = require('fs'),
       cheerio = require('cheerio');
       
-
-/* 
-String -> [Object -> X]
-*/
+      
+/* String -> [Object -> X] */
 function getHTML(input){
     var parsed = url.parse(input);
     var protocol;
@@ -39,9 +36,8 @@ function getHTML(input){
     });
 }
 
-/* 
-String -> [String -> [Object -> X]]
-*/
+
+/* String -> [String -> [Object -> X]] */
 function create$Obj(url){
     return getHTML(url).then((res) => {
         var $ = cheerio.load(res);

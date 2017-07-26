@@ -14,23 +14,15 @@ const DATA = {
 };
 
 
-/*-------------------------------------------------------*/
-/*------- Functions -------------------------------------*/
-/* 
-String, String -> String
-  only provides the query string, append to protocl/host
-*/
-
+/* String, String -> String
+    only provides the query string, append to protocl/host  */
 function searchPath(city, term){
     return "/jobs?q=" + term +  "&l=" + city + "&utm_source=publisher&utm_medium=organic_listings&utm_campaign=affiliate";
 }
 
 
-/*
-String -> [String -> Void]
-  initiates scraping
-*/
-
+/* String -> [String -> Void]
+    initiates scraping  */
 function searchPages(path){
     return hyperText.create$('https://' + DATA.BASE + path).then(($) => {
         return getSearchPageInfo($);
@@ -38,10 +30,9 @@ function searchPages(path){
 }
 
 
-/* 
-Object -> [String -> Void]
-  initiates scrape of current page and advancement to next page if present
-*/
+/* Object -> [String -> Void]
+    initiates scrape of current page and 
+    advancement to next page if present  */
 function getSearchPageInfo($){
     var next = getNextPageIfExists($);
     
@@ -55,10 +46,8 @@ function getSearchPageInfo($){
 }
 
 
-/* 
-Object -> [String, String -> Void]
-  retrieves all job post links and stores them in POSTS
-*/
+/* Object -> [String, String -> Void]
+    retrieves all job post links and stores them in POSTS  */
 function getSearchResults($){
     return $('.result').each(function(i, job){
         let postID = job.attribs['data-jk'];
@@ -82,9 +71,7 @@ function getSearchResults($){
 }
 
 
-/*
-Object -> Object
-*/
+/* Object -> Object */
 function getPostLinkInfo(html){
     let post = {
         postID: null,
@@ -94,13 +81,8 @@ function getPostLinkInfo(html){
     };
     
     switch(typeof(html.attribs['data-tn-component'])){
-        // ./pagead/clk?...
-        // sponsored ad?
-        case 'undefined':
-            //post.title = html.children[1].next.next.attribs.title;
-            //post.link = html.children[1].next.next.attribs.href;
-            break;
-        // ./rc/clk?... or ./company/...    
+        // if undefined it is most likely an ad, with a good chance of
+        // being a duplicate   
         case 'string':
             post.title = html.children[0].next.children[1].attribs.title;
             post.link = html.children[0].next.children[1].attribs.href;
@@ -113,9 +95,7 @@ function getPostLinkInfo(html){
 }
 
 
-/* 
-Object -> String or Null
-*/
+/* Object -> String or Null */
 function getNextPageIfExists($){
     var pages = $('.pagination a');
     var $last = $(pages[pages.length - 1]);
@@ -130,18 +110,15 @@ function getNextPageIfExists($){
 }
 
 
-/* 
-String, String -> [String -> [Object -> Void]]
-  places post ID into every matching term array
-  !!! better way to limit/delay retrying a 302 link
-*/
+/* String, String -> [String -> [Object -> Void]]
+    places post ID into every matching term array  */
 function filterForTerms(url, id){
     return hyperText.getHTML(url).then((data) => {
         var $ = cheerio.load(data);
         
         if($('title').text() === '302 Moved'){
             console.log('RETRYING:', id);
-            // find a way to space out retry
+            // what is a better way to handle retries?
             filterForTerms($('a').attr('href'), id);
             return;
         } else {
